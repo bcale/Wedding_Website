@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RSVP Responses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Jost', sans-serif; background: #f8f7f5; color: #1a1a2e; padding: 2rem; }
+    h1 { font-size: 1.6rem; font-weight: 300; margin-bottom: 1.5rem; letter-spacing: 0.08em; }
+    .stats { display: flex; gap: 1.5rem; margin-bottom: 2rem; }
+    .stat { background: #fff; border: 1px solid #e0ddd8; border-radius: 8px; padding: 1rem 1.5rem; min-width: 120px; }
+    .stat-num { font-size: 2rem; font-weight: 400; color: #2c5f8a; }
+    .stat-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #888; margin-top: 0.25rem; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    th { background: #2c5f8a; color: #fff; font-weight: 400; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid #f0ede8; font-size: 0.9rem; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8f7f5; }
+    .yes { color: #2c6e49; font-weight: 400; }
+    .no  { color: #9b2226; font-weight: 400; }
+    .empty { text-align: center; padding: 3rem; color: #aaa; }
+  </style>
+</head>
+<body>
+  <h1>RSVP Responses</h1>
+
+  {% set yes_count = rows | selectattr('attending', 'equalto', 1) | list | length %}
+  {% set no_count  = rows | selectattr('attending', 'equalto', 0) | list | length %}
+  {% set total_guests = rows | selectattr('attending', 'equalto', 1) | sum(attribute='guest_count') %}
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">{{ rows | length }}</div>
+      <div class="stat-label">Total RSVPs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ yes_count }}</div>
+      <div class="stat-label">Attending</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ no_count }}</div>
+      <div class="stat-label">Declined</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">{{ total_guests }}</div>
+      <div class="stat-label">Total Guests</div>
+    </div>
+  </div>
+
+  {% if rows %}
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Attending</th>
+        <th>Guests</th>
+        <th>Message</th>
+        <th>Submitted</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.name }}</td>
+        <td>{{ row.email or '—' }}</td>
+        <td class="{{ 'yes' if row.attending else 'no' }}">
+          {{ 'Yes ✓' if row.attending else 'No ✗' }}
+        </td>
+        <td>{{ row.guest_count if row.attending else '—' }}</td>
+        <td>{{ row.message or '—' }}</td>
+        <td style="font-size:0.8rem;color:#888">{{ row.submitted_at[:16].replace('T', ' ') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">No RSVPs yet.</div>
+  {% endif %}
+</body>
+</html>

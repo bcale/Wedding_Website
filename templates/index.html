@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>You're Invited — Karanpreet &amp; Caleb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+
+  <!-- ── Floating floral petals background ── -->
+  <div class="petals" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+
+    <!-- Personalized greeting (only shown when a token is present) -->
+    {% if guest_name %}
+    <p class="dear-line">Dear {{ guest_name }},</p>
+    {% endif %}
+
+    <!-- Squiggly "You're Invited!" SVG text -->
+    <div class="squiggle-wrap">
+      <svg class="squiggle-svg" viewBox="0 0 520 90" xmlns="http://www.w3.org/2000/svg" aria-label="You're Invited!">
+        <defs>
+          <path id="wave"
+            d="M10,55
+               C30,30 50,80 70,55
+               C90,30 110,80 130,55
+               C150,30 170,80 190,55
+               C210,30 230,80 250,55
+               C270,30 290,80 310,55
+               C330,30 350,80 370,55
+               C390,30 410,80 430,55
+               C450,30 470,80 490,55"/>
+        </defs>
+        <text class="squiggle-text" font-size="30" fill="#1a1a2e" letter-spacing="2">
+          <textPath href="#wave" startOffset="50%" text-anchor="middle">
+            You're Invited!
+          </textPath>
+        </text>
+      </svg>
+    </div>
+
+    <!-- Decorative floral divider -->
+    <div class="floral-divider" aria-hidden="true">
+      <svg viewBox="0 0 300 40" xmlns="http://www.w3.org/2000/svg">
+        <line x1="10" y1="20" x2="110" y2="20" stroke="#4a7fb5" stroke-width="0.8" opacity="0.5"/>
+        <circle cx="120" cy="20" r="4" fill="#4a7fb5" opacity="0.6"/>
+        <circle cx="112" cy="14" r="3" fill="#7bb3d9" opacity="0.5"/>
+        <circle cx="112" cy="26" r="3" fill="#7bb3d9" opacity="0.5"/>
+        <circle cx="150" cy="20" r="6" fill="#2c5f8a" opacity="0.7"/>
+        <circle cx="138" cy="14" r="4" fill="#4a7fb5" opacity="0.55"/>
+        <circle cx="138" cy="26" r="4" fill="#4a7fb5" opacity="0.55"/>
+        <circle cx="162" cy="14" r="4" fill="#4a7fb5" opacity="0.55"/>
+        <circle cx="162" cy="26" r="4" fill="#4a7fb5" opacity="0.55"/>
+        <circle cx="180" cy="20" r="4" fill="#4a7fb5" opacity="0.6"/>
+        <circle cx="188" cy="14" r="3" fill="#7bb3d9" opacity="0.5"/>
+        <circle cx="188" cy="26" r="3" fill="#7bb3d9" opacity="0.5"/>
+        <line x1="190" y1="20" x2="290" y2="20" stroke="#4a7fb5" stroke-width="0.8" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <!-- Couple name + details -->
+    {% if guest_name %}
+    <p class="invite-line reveal">
+      You are invited to the wedding of
+    </p>
+    {% endif %}
+    <h1 class="names reveal">Karanpreet &amp; Caleb</h1>
+    <p class="date reveal">Saturday, the nineteenth of September, 2026</p>
+    <p class="location reveal">The South Mountain Inn · Wernersville, PA</p>
+    <a href="#rsvp" class="cta-btn reveal">Kindly Reply</a>
+  </section>
+
+  <!-- ── Photo strip ── -->
+  <section class="photos reveal-section">
+    <div class="photo-grid">
+      <div class="photo photo-1 photo-reveal">
+        <div class="photo-inner"></div>
+      </div>
+      <div class="photo photo-2 photo-reveal">
+        <div class="photo-inner"></div>
+      </div>
+      <div class="photo photo-3 photo-reveal">
+        <div class="photo-inner"></div>
+      </div>
+    </div>
+    <p class="photo-caption reveal">A few of our favourite moments together</p>
+  </section>
+
+  <!-- ── Details ── -->
+  <section class="details reveal-section">
+    <div class="detail-card reveal">
+      <div class="detail-icon">◆</div>
+      <h3>Ceremony</h3>
+      <p>4:00 PM</p>
+      <p>Garden Terrace</p>
+    </div>
+    <div class="detail-card reveal">
+      <div class="detail-icon">◆</div>
+      <h3>Cocktail Hour</h3>
+      <p>5:00 PM</p>
+      <p>The Courtyard</p>
+    </div>
+    <div class="detail-card reveal">
+      <div class="detail-icon">◆</div>
+      <h3>Reception</h3>
+      <p>6:00 PM</p>
+      <p>Grand Ballroom</p>
+    </div>
+  </section>
+
+  <!-- ── RSVP Form ── -->
+  <section class="rsvp-section" id="rsvp">
+    <div class="rsvp-inner">
+      <h2 class="section-title reveal">Will you join us?</h2>
+      <p class="rsvp-note reveal">Please respond by May 1st, 2026</p>
+
+      <form class="rsvp-form reveal" id="rsvpForm" novalidate>
+
+        <!-- Hidden token field — ties this RSVP back to the guest record -->
+        <input type="hidden" id="guestToken" value="{{ token or '' }}"/>
+
+        <div class="field">
+          <label for="name">Full Name <span class="req">*</span></label>
+          <!-- Pre-fill with the guest's name if we know it -->
+          <input type="text" id="name" name="name"
+                 value="{{ guest_name or '' }}"
+                 placeholder="Your name" required autocomplete="name"/>
+        </div>
+
+        <div class="field">
+          <label for="email">Email <span class="optional">(optional)</span></label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email"/>
+        </div>
+
+        <!-- Attending toggle -->
+        <div class="field attend-toggle">
+          <label>Will you attend?</label>
+          <div class="toggle-row">
+            <button type="button" class="toggle-btn active" id="btnYes" data-val="yes">
+              Joyfully Accepts
+            </button>
+            <button type="button" class="toggle-btn" id="btnNo" data-val="no">
+              Regretfully Declines
+            </button>
+          </div>
+        </div>
+
+        <div class="field" id="guestField">
+          <label for="guest_count">Number of guests (including yourself)</label>
+          <select id="guest_count" name="guest_count">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="message">Leave a note <span class="optional">(optional)</span></label>
+          <textarea id="message" name="message" rows="3"
+                    placeholder="Dietary needs, song requests, well wishes…"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Send My RSVP</button>
+        <p class="form-error" id="formError"></p>
+      </form>
+
+      <!-- Success state -->
+      <div class="rsvp-success" id="rsvpSuccess" hidden>
+        <div class="success-icon">✦</div>
+        {% if guest_name %}
+        <h3>Thank you, {{ guest_name }}!</h3>
+        {% else %}
+        <h3>We can't wait to celebrate with you!</h3>
+        {% endif %}
+        <p>Your RSVP has been received. See you on June 14th.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="footer-floral" aria-hidden="true">✦</div>
+    <p>With love, Karanpreet &amp; Caleb</p>
+    <p class="footer-sub">Questions? <a href="mailto:caleb.barnes570@gmail.com">caleb.barnes570@gmail.com</a></p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
