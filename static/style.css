@@ -449,3 +449,7 @@ textarea { resize: vertical; min-height: 80px; }
 @keyframes fadeUp {
   to { opacity: 1; transform: none; }
 }
+
+img.photo-inner {
+  object-fit: cover;
+}
