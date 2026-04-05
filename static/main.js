@@ -92,3 +92,33 @@ form.addEventListener("submit", async (e) => {
     submitBtn.disabled = false;
   }
 });
+
+/* ── Squiggly text animation ── */
+const wavePath = document.getElementById("wave");
+if (wavePath) {
+  const flat = "M10,55 C30,30 50,80 70,55 C90,30 110,80 130,55 C150,30 170,80 190,55 C210,30 230,80 250,55 C270,30 290,80 310,55 C330,30 350,80 370,55 C390,30 410,80 430,55 C450,30 470,80 490,55";
+  const flip = "M10,55 C30,75 50,30 70,55 C90,75 110,30 130,55 C150,75 170,30 190,55 C210,75 230,30 250,55 C270,75 290,30 310,55 C330,75 350,30 370,55 C390,75 410,30 430,55 C450,75 470,30 490,55";
+  let start = null;
+  const duration = 6000;
+
+  function lerp(a, b, t) {
+    const an = a.match(/-?[\d.]+/g).map(Number);
+    const bn = b.match(/-?[\d.]+/g).map(Number);
+    const parts = a.split(/-?[\d.]+/g);
+    return parts.map((p, i) => p + (i < an.length ? (an[i] + (bn[i] - an[i]) * t).toFixed(2) : "")).join("");
+  }
+
+  function animateWave(ts) {
+    if (!start) start = ts;
+    const elapsed = (ts - start) % (duration * 2);
+    const half = elapsed < duration;
+    const t = half
+      ? elapsed / duration
+      : 1 - (elapsed - duration) / duration;
+    const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    wavePath.setAttribute("d", lerp(flat, flip, ease));
+    requestAnimationFrame(animateWave);
+  }
+
+  requestAnimationFrame(animateWave);
+}
