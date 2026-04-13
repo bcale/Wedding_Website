@@ -25,7 +25,7 @@ GUESTS = [
     # add as many as you like…
 ]
 
-BASE_URL = "https://yoursite.com/i"   # ← change to your real domain when deployed
+BASE_URL = "https://karanpreetandcaleb.us/i"   # ← change to your real domain when deployed
 
 
 # ── Seed database ─────────────────────────────────────────────────────────────
