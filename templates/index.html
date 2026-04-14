@@ -20,9 +20,11 @@
   <!-- ── Hero ── -->
   <section class="hero">
 
-    <!-- Personalized greeting (only shown when a token is present) -->
+    <!-- Personalized hero heading -->
     {% if guest_name %}
-    <p class="dear-line">Dear {{ guest_name }},</p>
+    <h1 class="invited-heading">{{ guest_name }}, you're invited!</h1>
+    {% else %}
+    <h1 class="invited-heading">You're invited!</h1>
     {% endif %}
 
     <!-- Decorative floral divider -->
