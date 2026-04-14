@@ -25,29 +25,6 @@
     <p class="dear-line">Dear {{ guest_name }},</p>
     {% endif %}
 
-    <!-- Squiggly "You're Invited!" SVG text -->
-    <div class="squiggle-wrap">
-      <svg class="squiggle-svg" viewBox="0 0 520 90" xmlns="http://www.w3.org/2000/svg" aria-label="You're Invited!">
-        <defs>
-          <path id="wave"
-            d="M10,55
-               C30,30 50,80 70,55
-               C90,30 110,80 130,55
-               C150,30 170,80 190,55
-               C210,30 230,80 250,55
-               C270,30 290,80 310,55
-               C330,30 350,80 370,55
-               C390,30 410,80 430,55
-               C450,30 470,80 490,55"/>
-        </defs>
-        <text class="squiggle-text" font-size="30" fill="#1a1a2e" letter-spacing="2">
-          <textPath href="#wave" startOffset="50%" text-anchor="middle">
-            You're Invited!
-          </textPath>
-        </text>
-      </svg>
-    </div>
-
     <!-- Decorative floral divider -->
     <div class="floral-divider" aria-hidden="true">
       <svg viewBox="0 0 300 40" xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +45,7 @@
     </div>
 
     <!-- Couple name + details -->
-    {% if guest_name %}
+    {% if guest_name %} 
     <p class="invite-line reveal">
       You are invited to the wedding of
     </p>
