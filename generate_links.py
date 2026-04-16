@@ -10,22 +10,29 @@ It prints one ready-to-text URL per guest.
 
 import sqlite3, secrets, os
 
+
 DB_PATH = os.path.join(os.path.dirname(__file__), "rsvp.db")
 
 # ── Your guest list ───────────────────────────────────────────────────────────
 # Each entry is the name that will appear on the invite page.
-# Use whatever feels personal: first name, full name, "The Johnson Family", etc.
 
 GUESTS = [
-    "Priya",
-    "The Smith Family",
-    "Marcus",
-    "Aunt Linda",
-    "Dev & Simone",
-    # add as many as you like…
+    "Mom",
+    "Dad",
+    "Naomi & Lucas",
+    "Noah",
+    "Sam",
+    "Josiah",
+    "Lilyanna",
+    "Maryrose",
+    "Angelo",
+    "Gavin",
+    "Gerard Family",
+    "Brandon",
+    "Alberino",
 ]
 
-BASE_URL = "https://karanpreetandcaleb.us/i"   # ← change to your real domain when deployed
+BASE_URL = "https://karanpreetandcaleb.us/i"   # domain
 
 
 # ── Seed database ─────────────────────────────────────────────────────────────
