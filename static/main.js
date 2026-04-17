@@ -78,9 +78,28 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (data.ok) {
+      // Reset button before hiding so it never freezes mid-state
+      submitBtn.textContent = "Send My RSVP";
+      submitBtn.disabled = false;
+
+      // Attendance-aware success message
+      const firstName = name.split(" ")[0];
+      if (attending) {
+        successBox.querySelector("h3").textContent =
+          `We can't wait to celebrate with you, ${firstName}!`;
+        successBox.querySelector("p").textContent =
+          "Your RSVP has been received. See you on June 14th!";
+      } else {
+        successBox.querySelector("h3").textContent =
+          `We're sorry you can't make it, ${firstName}.`;
+        successBox.querySelector("p").textContent =
+          "We'll miss you and hope to celebrate with you another time.";
+      }
+
       form.hidden = true;
       successBox.hidden = false;
       successBox.scrollIntoView({ behavior: "smooth", block: "center" });
+
     } else {
       formError.textContent = data.error || "Something went wrong. Please try again.";
       submitBtn.textContent = "Send My RSVP";
