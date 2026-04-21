@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, abort
 import sqlite3, os
+import secrets
 from datetime import datetime
 
 app = Flask(__name__)
@@ -96,6 +97,66 @@ def admin_responses():
             "SELECT * FROM rsvps ORDER BY submitted_at DESC"
         ).fetchall()
     return render_template("admin.html", rows=rows)
+
+# Creating URLs for each guest. Ran in browser once.
+@app.route("/admin/seed-guests")
+def seed_guests():
+    secret = request.args.get("secret")
+    if secret != os.environ.get("SEED_SECRET"):
+        abort(403)
+ 
+    guests = [
+        "Mom",
+        "Dad",
+        "Noah",
+        "Sam",
+        "Naomi & Lucas",
+        "Josiah & Emma",
+        "Lilyanna",
+        "Maryrose",
+        "Uncle Russell & Aunt Priscilla",
+        "Jefferson",
+        "Nathan & Family",
+        "Laura & Family",
+        "Uncle Steven & Aunt Lancy",
+        "Uncle David",
+        "Daniel Barnes",
+        "Liam & Amanda",
+        "Riley",
+        "Uncle Mark & Family",
+        "Uncle George & Family",
+        "Aunty Becky",
+        "Gavin",
+        "Spencer",
+        "Madeline",
+        "Hunter",
+        "Alberino Family",
+        "Rachel, Anthony, Avery, & Adler",
+        "Aunt Julia & Family",
+        "Rich",
+        "Brandon",
+        "Angelo",
+        "Eric & Family",
+        "Harry"
+    ]
+ 
+    results = []
+    for name in guests:
+        existing = execute(
+            "SELECT token FROM guests WHERE name = ?",
+            (name,), fetchone=True
+        )
+        if existing:
+            token = existing["token"]
+        else:
+            token = secrets.token_urlsafe(8)
+            execute(
+                "INSERT INTO guests (name, token) VALUES (?, ?)",
+                (name, token)
+            )
+        results.append({"name": name, "token": token})
+ 
+    return jsonify(results)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
