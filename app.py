@@ -1,10 +1,30 @@
-from flask import Flask, render_template, request, jsonify, abort
-import sqlite3, os
+import os
 import secrets
 from datetime import datetime
+from flask import Flask, render_template, request, jsonify, abort
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 DB_PATH = os.path.join(os.path.dirname(__file__), "rsvp.db")
+
+def execute(sql, params=(), fetchone=False, fetchall=False):
+    conn, kind = get_db()
+    if kind == "pg":
+        sql = sql.replace("?", "%s")
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        result = None
+        if fetchone:
+            result = cur.fetchone()
+        elif fetchall:
+            result = cur.fetchall()
+        conn.commit()
+        return result
+    finally:
+        conn.close()
 
 
 # ── Database ──────────────────────────────────────────────────────────────────
@@ -97,6 +117,7 @@ def admin_responses():
             "SELECT * FROM rsvps ORDER BY submitted_at DESC"
         ).fetchall()
     return render_template("admin.html", rows=rows)
+
 
 # Creating URLs for each guest. Ran in browser once.
 @app.route("/admin/seed-guests")
