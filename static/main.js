@@ -88,7 +88,7 @@ form.addEventListener("submit", async (e) => {
         successBox.querySelector("h3").textContent =
           `We can't wait to celebrate with you, ${firstName}!`;
         successBox.querySelector("p").textContent =
-          "Your RSVP has been received. See you on June 14th!";
+          "Your RSVP has been received. See you on September 19!";
       } else {
         successBox.querySelector("h3").textContent =
           `We're sorry you can't make it, ${firstName}.`;
