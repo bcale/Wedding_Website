@@ -7,7 +7,28 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-DB_PATH = os.path.join(os.path.dirname(__file__), "rsvp.db")
+
+DATABASE_URL    = os.environ.get("DATABASE_URL")
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
+SENDER_EMAIL    = os.environ.get("SENDER_EMAIL", "karanpreetandcaleb@gmail.com")
+
+
+# ── DB helpers ────────────────────────────────────────────────────────────────
+
+def get_db():
+    if DATABASE_URL:
+        import psycopg2, psycopg2.extras
+        conn = psycopg2.connect(DATABASE_URL)
+        conn.cursor_factory = psycopg2.extras.RealDictCursor
+        return conn, "pg"
+    else:
+        import sqlite3
+        conn = sqlite3.connect(
+            os.path.join(os.path.dirname(__file__), "rsvp.db")
+        )
+        conn.row_factory = sqlite3.Row
+        return conn, "sqlite"
+
 
 def execute(sql, params=(), fetchone=False, fetchall=False):
     conn, kind = get_db()
@@ -27,58 +48,101 @@ def execute(sql, params=(), fetchone=False, fetchall=False):
         conn.close()
 
 
-# ── Database ──────────────────────────────────────────────────────────────────
-
-def get_db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
 def init_db():
-    with get_db() as conn:
-        # Personalized guests — one row per invite link
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS guests (
-                id      INTEGER PRIMARY KEY AUTOINCREMENT,
-                name    TEXT NOT NULL,          -- "Priya", "The Smith Family", etc.
-                token   TEXT NOT NULL UNIQUE    -- random slug used in the URL
-            )
-        """)
-        # RSVP responses (unchanged, but now references guests.token)
-        conn.execute("""
-            CREATE TABLE IF NOT EXISTS rsvps (
-                id           INTEGER PRIMARY KEY AUTOINCREMENT,
-                token        TEXT NOT NULL,
-                name         TEXT NOT NULL,
-                email        TEXT,
-                attending    INTEGER NOT NULL,
-                guest_count  INTEGER DEFAULT 1,
-                message      TEXT,
-                submitted_at TEXT NOT NULL
-            )
-        """)
-        conn.commit()
+    serial = "SERIAL" if DATABASE_URL else "INTEGER"
+    execute(f"""
+        CREATE TABLE IF NOT EXISTS guests (
+            id    {serial} PRIMARY KEY,
+            name  TEXT NOT NULL,
+            token TEXT NOT NULL UNIQUE
+        )
+    """)
+    execute(f"""
+        CREATE TABLE IF NOT EXISTS rsvps (
+            id           {serial} PRIMARY KEY,
+            token        TEXT NOT NULL,
+            name         TEXT NOT NULL,
+            email        TEXT,
+            attending    INTEGER NOT NULL,
+            guest_count  INTEGER DEFAULT 1,
+            message      TEXT,
+            submitted_at TEXT NOT NULL
+        )
+    """)
+
+
+init_db()
+
+
+# ── Email ─────────────────────────────────────────────────────────────────────
+
+def send_rsvp_email(to_email, name, attending, guest_count):
+    if not SENDGRID_API_KEY or not to_email:
+        return
+
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail
+
+    first = name.split()[0]
+
+    if attending:
+        subject = "We can't wait to celebrate with you!"
+        body = f"""Dear {first},
+
+Thank you for your RSVP — we're so excited to celebrate with you!
+
+Here are the details:
+  Date:   Saturday, June 14th, 2026
+  Time:   Ceremony at 4:00 PM
+  Venue:  The Garden at Whitmore Estate, Hudson, NY
+
+We've noted {guest_count} guest(s) in your party.
+
+With love,
+Karanpreet & Caleb
+"""
+    else:
+        subject = "We'll miss you!"
+        body = f"""Dear {first},
+
+Thank you for letting us know. We're sorry you won't be able to make it,
+but we're grateful you took the time to respond.
+
+We hope to celebrate with you another time soon.
+
+With love,
+Karanpreet & Caleb
+"""
+
+    message = Mail(
+        from_email=SENDER_EMAIL,
+        to_emails=to_email,
+        subject=subject,
+        plain_text_content=body
+    )
+
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        sg.send(message)
+    except Exception as e:
+        print(f"Email error for {to_email}: {e}")
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.route("/")
 def index():
-    # Generic landing page (no personalisation) — useful as a fallback
-    return render_template("index.html", guest_name=None)
+    return render_template("index.html", guest_name=None, token=None)
 
 
 @app.route("/i/<token>")
 def invite(token):
-    with get_db() as conn:
-        guest = conn.execute(
-            "SELECT name FROM guests WHERE token = ?", (token,)
-        ).fetchone()
-
+    guest = execute(
+        "SELECT name FROM guests WHERE token = ?",
+        (token,), fetchone=True
+    )
     if not guest:
-        abort(404)   # Bad / expired token → 404
-
+        abort(404)
     return render_template("index.html", guest_name=guest["name"], token=token)
 
 
@@ -95,37 +159,31 @@ def rsvp():
     if not name:
         return jsonify({"ok": False, "error": "Name is required."}), 400
 
-    with get_db() as conn:
-        conn.execute(
-            """INSERT INTO rsvps
-               (token, name, email, attending, guest_count, message, submitted_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (token, name, email, attending, guest_count, message,
-             datetime.utcnow().isoformat())
-        )
-        conn.commit()
+    execute(
+        """INSERT INTO rsvps
+           (token, name, email, attending, guest_count, message, submitted_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?)""",
+        (token, name, email, attending, guest_count, message,
+         datetime.utcnow().isoformat())
+    )
+
+    send_rsvp_email(email, name, attending, guest_count)
 
     return jsonify({"ok": True})
 
 
-# ── Admin ─────────────────────────────────────────────────────────────────────
-
 @app.route("/admin/responses")
 def admin_responses():
-    with get_db() as conn:
-        rows = conn.execute(
-            "SELECT * FROM rsvps ORDER BY submitted_at DESC"
-        ).fetchall()
-    return render_template("admin.html", rows=rows)
+    rows = execute("SELECT * FROM rsvps ORDER BY submitted_at DESC", fetchall=True)
+    return render_template("admin.html", rows=rows or [])
 
 
-# Creating URLs for each guest. Ran in browser once.
 @app.route("/admin/seed-guests")
 def seed_guests():
     secret = request.args.get("secret")
     if secret != os.environ.get("SEED_SECRET"):
         abort(403)
- 
+
     guests = [
         "Mom",
         "Dad",
@@ -160,7 +218,7 @@ def seed_guests():
         "Eric & Family",
         "Harry"
     ]
- 
+
     results = []
     for name in guests:
         existing = execute(
@@ -176,12 +234,11 @@ def seed_guests():
                 (name, token)
             )
         results.append({"name": name, "token": token})
- 
+
     return jsonify(results)
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# ── Local dev entry point ─────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
