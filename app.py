@@ -198,10 +198,7 @@ def seed_guests():
         "Nathan & Family",
         "Laura & Family",
         "Uncle Steven & Aunt Lancy",
-        "Uncle David",
-        "Daniel Barnes",
-        "Liam & Amanda",
-        "Riley",
+        "Uncle David & Family",
         "Uncle Mark & Family",
         "Uncle George & Family",
         "Aunty Becky",
@@ -210,13 +207,18 @@ def seed_guests():
         "Madeline",
         "Hunter",
         "Alberino Family",
-        "Rachel, Anthony, Avery, & Adler",
+        "Violento Family",
         "Aunt Julia & Family",
         "Rich",
         "Brandon",
         "Angelo",
         "Eric & Family",
-        "Harry"
+        "Harry",
+        "Bryce & Family",
+        "Evan & Family",
+        "Mimi",
+        "Papa"
+        ""
     ]
 
     results = []
