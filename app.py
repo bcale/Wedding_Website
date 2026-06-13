@@ -9,7 +9,8 @@ load_dotenv()
 app = Flask(__name__)
 
 DATABASE_URL    = os.environ.get("DATABASE_URL")
-
+ADMIN_USER   = os.environ.get("ADMIN_USER", "caleb007")
+ADMIN_PASS   = os.environ.get("ADMIN_PASS", "H@mb0rg3r!12")
 
 # ── DB helpers ────────────────────────────────────────────────────────────────
 
@@ -71,6 +72,21 @@ def init_db():
 
 init_db()
 
+# ── Admin login ───────────────────────────────────────────────────────────────
+ 
+def require_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or auth.username != ADMIN_USER or auth.password != ADMIN_PASS:
+            return Response(
+                "Login required.",
+                401,
+                {"WWW-Authenticate": 'Basic realm="Admin"'}
+            )
+        return f(*args, **kwargs)
+    return decorated
+
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.route("/")
@@ -110,18 +126,18 @@ def rsvp():
          datetime.utcnow().isoformat())
     )
 
-    send_rsvp_email(email, name, attending, guest_count)
-
     return jsonify({"ok": True})
 
 
 @app.route("/admin/responses")
+@require_auth
 def admin_responses():
     rows = execute("SELECT * FROM rsvps ORDER BY submitted_at DESC", fetchall=True)
     return render_template("admin.html", rows=rows or [])
 
 
 @app.route("/admin/seed-guests")
+@require_auth
 def seed_guests():
     secret = request.args.get("secret")
     if secret != os.environ.get("SEED_SECRET"):
