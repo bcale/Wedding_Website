@@ -140,10 +140,6 @@ def admin_responses():
 @app.route("/admin/seed-guests")
 @require_auth
 def seed_guests():
-    secret = request.args.get("secret")
-    if secret != os.environ.get("SEED_SECRET"):
-        abort(403)
-
     guests = [
         "Mom",
         "Dad",
