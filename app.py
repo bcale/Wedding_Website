@@ -9,8 +9,6 @@ load_dotenv()
 app = Flask(__name__)
 
 DATABASE_URL    = os.environ.get("DATABASE_URL")
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
-SENDER_EMAIL    = os.environ.get("SENDER_EMAIL", "karanpreetandcaleb@gmail.com")
 
 
 # ── DB helpers ────────────────────────────────────────────────────────────────
@@ -72,61 +70,6 @@ def init_db():
 
 
 init_db()
-
-
-# ── Email ─────────────────────────────────────────────────────────────────────
-
-def send_rsvp_email(to_email, name, attending, guest_count):
-    if not SENDGRID_API_KEY or not to_email:
-        return
-
-    from sendgrid import SendGridAPIClient
-    from sendgrid.helpers.mail import Mail
-
-    first = name.split()[0]
-
-    if attending:
-        subject = "We can't wait to celebrate with you!"
-        body = f"""Dear {first},
-
-Thank you for your RSVP — we're so excited to celebrate with you!
-
-Here are the details:
-  Date:   Saturday, June 14th, 2026
-  Time:   Ceremony at 4:00 PM
-  Venue:  The Garden at Whitmore Estate, Hudson, NY
-
-We've noted {guest_count} guest(s) in your party.
-
-With love,
-Karanpreet & Caleb
-"""
-    else:
-        subject = "We'll miss you!"
-        body = f"""Dear {first},
-
-Thank you for letting us know. We're sorry you won't be able to make it,
-but we're grateful you took the time to respond.
-
-We hope to celebrate with you another time soon.
-
-With love,
-Karanpreet & Caleb
-"""
-
-    message = Mail(
-        from_email=SENDER_EMAIL,
-        to_emails=to_email,
-        subject=subject,
-        plain_text_content=body
-    )
-
-    try:
-        sg = SendGridAPIClient(SENDGRID_API_KEY)
-        sg.send(message)
-    except Exception as e:
-        print(f"Email error for {to_email}: {e}")
-
 
 # ── Routes ────────────────────────────────────────────────────────────────────
 
