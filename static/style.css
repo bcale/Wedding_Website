@@ -172,6 +172,7 @@ body {
   gap: 1rem;
   max-width: 900px;
   margin: 0 auto 1.5rem;
+  justify-items: center;
 }
 
 @media (min-width: 600px) {
@@ -193,6 +194,9 @@ body {
   opacity: 0;
   transform: translateY(32px) scale(0.97);
   transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+
+  width: 100%;
+  max-width: 450px; 
 }
 .photo.visible {
   opacity: 1;

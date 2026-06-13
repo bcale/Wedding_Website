@@ -145,7 +145,7 @@ def seed_guests():
         "Dad",
         "Noah",
         "Sam",
-        "Naomi & Lucas",
+        "Naomi & Lucas & Philip",
         "Josiah & Emma",
         "Lilyanna",
         "Maryrose",
