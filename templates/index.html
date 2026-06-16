@@ -7,7 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2"/>
+
 </head>
 <body>
 
@@ -102,7 +103,7 @@
       <h2 class="section-title reveal">Will you join us?</h2>
       <p class="rsvp-note reveal">Please respond by July 15, 2026</p>
 
-      <form class="rsvp-form reveal" id="rsvpForm" novalidate>
+      <form class="rsvp-form" id="rsvpForm" novalidate>
 
         <!-- Hidden token field — ties this RSVP back to the guest record -->
         <input type="hidden" id="guestToken" value="{{ token or '' }}"/>
@@ -166,6 +167,6 @@
     <p class="footer-sub">Questions? <a href="mailto:karanpreetandcaleb@protonmail.com">karanpreetandcaleb@protonmail.com</a></p>
   </footer>
 
-  <script src="{{ url_for('static', filename='main.js') }}"></script>
+  <script src="{{ url_for('static', filename='main.js') }}?v=2"></script>
 </body>
 </html>
