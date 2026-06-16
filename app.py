@@ -158,7 +158,7 @@ def seed_guests():
         "Uncle Mark & Family",
         "Uncle George & Family",
         "Aunty Becky",
-        "Gavin",
+        "Gavin & Jovie",
         "Spencer",
         "Madeline",
         "Hunter",

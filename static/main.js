@@ -43,6 +43,43 @@ btnNo.addEventListener("click", () => {
   guestField.style.display = "none";
 });
 
+/* ── Modal ───────────────────────────────────────────────────────────────── */
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle   = document.getElementById("modalTitle");
+const modalBody    = document.getElementById("modalBody");
+const modalClose   = document.getElementById("modalClose");
+ 
+function showModal(title, body) {
+  modalTitle.textContent = title;
+  modalBody.textContent  = body;
+  modalOverlay.hidden    = false;
+  // Small delay lets the browser register display before animating opacity
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => modalOverlay.classList.add("visible"));
+  });
+  document.body.style.overflow = "hidden"; // prevent background scroll
+}
+ 
+function closeModal() {
+  modalOverlay.classList.remove("visible");
+  modalOverlay.addEventListener("transitionend", () => {
+    modalOverlay.hidden = true;
+    document.body.style.overflow = "";
+  }, { once: true });
+}
+ 
+modalClose.addEventListener("click", closeModal);
+ 
+// Also close if user taps the dark backdrop
+modalOverlay.addEventListener("click", (e) => {
+  if (e.target === modalOverlay) closeModal();
+});
+ 
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !modalOverlay.hidden) closeModal();
+});
+
 
 /* ── RSVP form submit ────────────────────────────────────────────────────── */
 const form       = document.getElementById("rsvpForm");
