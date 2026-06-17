@@ -122,7 +122,7 @@ form.addEventListener("submit", async (e) => {
       if (attending) {
         showModal(
           `We can't wait to celebrate with you, ${firstName}!`,
-          "Your RSVP has been received. We'll see you on June 14th!"
+          "Your RSVP has been received. We'll see you on September 19!"
         );
       } else {
         showModal(
