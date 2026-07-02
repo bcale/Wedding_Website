@@ -170,6 +170,8 @@ def seed_guests():
         "Angelo",
         "Eric & Family",
         "Harry",
+        "Tyler",
+        "Larry",
         "Bryce & Family",
         "Evan & Family",
         "Mimi",
