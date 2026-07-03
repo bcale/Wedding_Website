@@ -523,7 +523,7 @@ img.photo-inner {
 
 .corner-container {
   position: relative; 
-  width: 100%;
+  width: 50%;
   min-height: 100vh;
   overflow: hidden;
 }
@@ -534,7 +534,7 @@ img.photo-inner {
   right: 0;
   width: 150px;
   max-width: 20%;
-  height: auto;
+  height: 150px;
   z-index: 1;
 }
 
@@ -544,6 +544,6 @@ img.photo-inner {
   left: 0;
   width: 150px;
   max-width: 20%;
-  height: auto;
+  height: 150px;
   z-index: 1; 
 }
