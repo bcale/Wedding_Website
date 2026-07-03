@@ -178,7 +178,12 @@ def seed_guests():
         "Papa",
         "Mr. Singh & Ms. Kaur",
         "Isha",
-        "Karanpreet <3"
+        "Karanpreet <3",
+        "David",
+        "Tariq",
+        "Watson",
+        "Tim",
+        "Jake"
         ""
     ]
 

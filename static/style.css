@@ -521,11 +521,25 @@ img.photo-inner {
   color: #fff;
 }
 
-.floral-border {
-  position: fixed;
-  inset: 0;
-  background-image: url('/static/images/test_border.png');
-  background-size: 100% 100%;
-  pointer-events: none;
-  z-index: 50;
+.corner-container {
+  position: relative; 
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.img-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: auto;
+}
+
+.img-bottom-left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 150px;       /* Adjust size as needed */
+  height: auto;
 }
