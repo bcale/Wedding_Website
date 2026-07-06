@@ -117,16 +117,14 @@ form.addEventListener("submit", async (e) => {
       submitBtn.textContent = "Send My RSVP";
       submitBtn.disabled = false;
  
-      const firstName = name.split(" ")[0];
- 
       if (attending) {
         showModal(
-          `We can't wait to celebrate with you, ${firstName}!`,
+          `We can't wait to celebrate with you, ${name}!`,
           "Your RSVP has been received. We'll see you on September 19!"
         );
       } else {
         showModal(
-          `We're sorry you can't make it, ${firstName}.`,
+          `We're sorry you can't make it, ${name}.`,
           "We'll miss you and hope to celebrate with you another time."
         );
       }
