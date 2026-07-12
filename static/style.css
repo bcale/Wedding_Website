@@ -98,7 +98,8 @@ body {
 .invited-heading {
   font-family: 'Imperial Script', cursive;
   font-style: normal;
-  font-weight: 600;
+  font-size: 4rem;
+  font-weight: 300;
   color: var(--gray);
   margin-bottom: 0.4rem;
 }
