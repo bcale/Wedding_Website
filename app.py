@@ -63,7 +63,8 @@ def init_db():
             token        TEXT NOT NULL,
             name         TEXT NOT NULL,
             email        TEXT,
-            attending    INTEGER NOT NULL,
+            attending_ceremony    INTEGER NOT NULL,
+            attending_reception    INTEGER NOT NULL,
             guest_count  INTEGER DEFAULT 1,
             message      TEXT,
             submitted_at TEXT NOT NULL
@@ -112,7 +113,8 @@ def rsvp():
     token       = (data.get("token") or "").strip()
     name        = (data.get("name") or "").strip()
     email       = (data.get("email") or "").strip()
-    attending   = 1 if data.get("attending") else 0
+    attending_ceremony   = 1 if data.get("attending") else 0
+    attending_reception   = 1 if data.get("attending") else 0
     guest_count = int(data.get("guest_count") or 1)
     message     = (data.get("message") or "").strip()
 
@@ -121,9 +123,9 @@ def rsvp():
 
     execute(
         """INSERT INTO rsvps
-           (token, name, email, attending, guest_count, message, submitted_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?)""",
-        (token, name, email, attending, guest_count, message,
+           (token, name, email, attending_ceremony, attending_reception, guest_count, message, submitted_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+        (token, name, email, attending_ceremony, attending_reception, guest_count, message,
          datetime.utcnow().isoformat())
     )
 
