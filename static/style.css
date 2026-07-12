@@ -75,7 +75,7 @@ body {
 
 /* ── Personalized greeting ── */
 .dear-line {
-  font-family: var(--font-serif);
+  font-family: "Brush Script MT", cursive;
   font-style: italic;
   font-size: clamp(1.1rem, 3.5vw, 1.5rem);
   font-weight: 300;
@@ -95,12 +95,12 @@ body {
   margin-bottom: 0.4rem;
 }
 
-/* Floral divider */
-.floral-divider {
-  width: min(300px, 80vw);
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 1s var(--ease-out) 0.55s forwards;
+.invited-heading {
+  font-family: 'Imperial Script', cursive;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--gray);
+  margin-bottom: 0.4rem;
 }
 
 /* Names */
