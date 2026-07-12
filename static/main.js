@@ -8,7 +8,7 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.12 }
+  { threshold: 0.15 }
 );
 
 document.querySelectorAll(".reveal").forEach((el) => {
@@ -108,7 +108,7 @@ form.addEventListener("submit", async (e) => {
     const res = await fetch("/rsvp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, name, email, attending, guest_count, message }),
+      body: JSON.stringify({ token, name, email, attending_ceremony, attending_reception, guest_count, message }),
     });
  
     const data = await res.json();

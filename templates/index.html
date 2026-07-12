@@ -70,20 +70,26 @@
   <section class="details reveal-section">
     <div class="detail-card reveal">
       <div class="detail-icon">◆</div>
+      <h3>Anand Karaj</h3>
+      <p>Friday, 9:30 AM - 4:00 PM</p>
+      <p>Blue Mountain Gurudwara</p>
+    </div>
+    <div class="detail-card reveal">
+      <div class="detail-icon">◆</div>
       <h3>Cocktail Hour</h3>
-      <p>4:00 PM</p>
+      <p>Saturday, 4:00 PM</p>
       <p>The Courtyard</p>
     </div>
     <div class="detail-card reveal">
       <div class="detail-icon">◆</div>
       <h3>Dinner Reception</h3>
-      <p>5:00 PM</p>
+      <p>Saturday, 5:00 PM</p>
       <p>The Tent</p>
     </div>
     <div class="detail-card reveal">
       <div class="detail-icon">◆</div>
-      <h3>Music, Dancing, Cake, Etc.</h3>
-      <p>7:00 PM</p>
+      <h3>Music, Dancing, & Cake</h3>
+      <p>Saturday, 7:00 PM</p>
       <p>The Dance Floor</p>
   </section>
 
@@ -91,7 +97,7 @@
   <section class="rsvp-section" id="rsvp">
     <div class="rsvp-inner">
       <h2 class="section-title reveal">Will you join us?</h2>
-      <p class="rsvp-note reveal">Please respond by July 30, 2026</p>
+      <p class="rsvp-note reveal">Please respond by August 2, 2026</p>
 
       <form class="rsvp-form" id="rsvpForm" novalidate>
 
@@ -111,9 +117,22 @@
           <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email"/>
         </div>
 
-        <!-- Attending toggle -->
+        <!-- Attending ceremony toggle -->
         <div class="field attend-toggle">
-          <label>Will you attend?</label>
+          <label>Will you attend Friday's ceremony?</label>
+          <div class="toggle-row">
+            <button type="button" class="toggle-btn active" id="btnYes" data-val="yes">
+              Joyfully Accepts
+            </button>
+            <button type="button" class="toggle-btn" id="btnNo" data-val="no">
+              Regretfully Declines
+            </button>
+          </div>
+        </div>
+
+        <!-- Attending reception toggle -->
+        <div class="field attend-toggle">
+          <label>Will you attend Saturday's reception?</label>
           <div class="toggle-row">
             <button type="button" class="toggle-btn active" id="btnYes" data-val="yes">
               Joyfully Accepts
