@@ -79,7 +79,7 @@ body {
   font-style: italic;
   font-size: clamp(1.1rem, 3.5vw, 1.5rem);
   font-weight: 300;
-  color: var(--blue-mid);
+  color: var(--blue-deep);
   letter-spacing: 0.04em;
   margin-bottom: 0.5rem;
   opacity: 0;
@@ -91,16 +91,16 @@ body {
   font-size: clamp(0.75rem, 2vw, 0.9rem);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gray);
+  color: var(--blue-deep);
   margin-bottom: 0.4rem;
 }
 
 .invited-heading {
   font-family: 'Imperial Script', cursive;
   font-style: normal;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 300;
-  color: var(--gray);
+  color: var(--blue-deep);
   margin-bottom: 0.4rem;
 }
 
