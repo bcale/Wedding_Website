@@ -147,12 +147,26 @@ form.addEventListener("submit", async (e) => {
       submitBtn.textContent = "Send My RSVP";
       submitBtn.disabled = false;
  
-      if (attending_cer || attending_rec) {
+      if (attending_cer && !attending_rec) {
+        showModal(
+          `We can't wait to celebrate with you at the Anand Karaj, ${name}!`,
+          "Your RSVP has been received. We'll see you on September 18."
+        );
+      } 
+      else if (attending_rec && !attending_cer) {
+        showModal(
+          `We can't wait to celebrate with you at the Wedding Reception, ${name}!`,
+          "Your RSVP has been received. We'll see you on September 19."
+        );
+      }
+      else if (attending_cer && attending_rec) {
         showModal(
           `We can't wait to celebrate with you, ${name}!`,
-          "Your RSVP has been received. We'll see you on September 19!"
-        );
-      } else {
+          "Your RSVP has been received. We'll see you on September 18 and 19."
+        )
+      }
+      
+      else {
         showModal(
           `We're sorry you can't make it, ${name}.`,
           "We'll miss you and hope to celebrate with you another time."
