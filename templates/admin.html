@@ -55,7 +55,8 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Attending</th>
+        <th>Ceremony</th>
+        <th>Reception</th>
         <th>Guests</th>
         <th>Message</th>
         <th>Submitted</th>
@@ -66,8 +67,11 @@
       <tr>
         <td>{{ row.name }}</td>
         <td>{{ row.email or '—' }}</td>
-        <td class="{{ 'yes' if row.attending else 'no' }}">
-          {{ 'Yes ✓' if row.attending else 'No ✗' }}
+        <td class="{{ 'yes' if row.attending_cer else 'no' }}">
+          {{ 'Yes ✓' if row.attending_cer else 'No ✗' }}
+        </td>
+        <td class="{{ 'yes' if row.attending_rec else 'no' }}">
+          {{ 'Yes ✓' if row.attending_rec else 'No ✗' }}
         </td>
         <td>{{ row.guest_count if row.attending else '—' }}</td>
         <td>{{ row.message or '—' }}</td>
