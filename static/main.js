@@ -22,24 +22,45 @@ document.querySelectorAll(".reveal").forEach((el) => {
 document.querySelectorAll(".photo").forEach((el) => observer.observe(el));
 
 
-/* ── Attending toggle ────────────────────────────────────────────────────── */
-let attending = true;
+/* ── Attending toggle logic ────────────────────────────────────────────────────── */
+// Changing to allow for tiered logic. Adding ability to differentiate between ceremony events and reception
+let attending_cer = true;
+let attending_rec = true;
 
-const btnYes     = document.getElementById("btnYes");
-const btnNo      = document.getElementById("btnNo");
+const btnYesCer     = document.getElementById("btnYesCer");
+const btnNoCer      = document.getElementById("btnNoCer");
+const btnYesRec     = document.getElementById("btnYesRec");
+const btnNoRec      = document.getElementById("btnNoRec");
 const guestField = document.getElementById("guestField");
 
-btnYes.addEventListener("click", () => {
-  attending = true;
-  btnYes.classList.add("active");
-  btnNo.classList.remove("active");
+
+// Ceremony toggle button
+btnYesCer.addEventListener("click", () => {
+  attending_cer = true;
+  btnYesCer.classList.add("active");
+  btnNoCer.classList.remove("active");
   guestField.style.display = "";
 });
 
-btnNo.addEventListener("click", () => {
-  attending = false;
-  btnNo.classList.add("active");
-  btnYes.classList.remove("active");
+btnNoCer.addEventListener("click", () => {
+  attending_cer = false;
+  btnNoCer.classList.add("active");
+  btnYesCer.classList.remove("active");
+  guestField.style.display = "none";
+});
+
+// Reception toggle button
+btnYesRec.addEventListener("click", () => {
+  attending_rec = true;
+  btnYesRec.classList.add("active");
+  btnNoRec.classList.remove("active");
+  guestField.style.display = "";
+});
+
+btnNoRec.addEventListener("click", () => {
+  attending_rec = false;
+  btnNoRec.classList.add("active");
+  btnYesRec.classList.remove("active");
   guestField.style.display = "none";
 });
 
@@ -117,7 +138,7 @@ form.addEventListener("submit", async (e) => {
       submitBtn.textContent = "Send My RSVP";
       submitBtn.disabled = false;
  
-      if (attending) {
+      if (attending_cer || attending_rec ) {
         showModal(
           `We can't wait to celebrate with you, ${name}!`,
           "Your RSVP has been received. We'll see you on September 19!"
