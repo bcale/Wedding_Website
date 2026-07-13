@@ -34,10 +34,8 @@
     <h1 class="invited-heading">{{ guest_name }}, you're invited!</h1>
     <img src="{{ url_for('static', filename='images/upper_right.png') }}"
      alt="" class="img-top-right" aria-hidden="true"/>
-    <img src="{{ url_for('static', filename='images/lower_left.png') }}"
-     alt="" class="img-bottom-left" aria-hidden="true" margin-bottom="0"/>
     {% else %}
-    <h1 class="invited-heading">We invite you to the Wedding Reception of</h1>
+    <h1 class="invited-heading">We invite you to the Wedding of</h1>
     {% endif %}
 
     <!-- Line divider -->
@@ -46,7 +44,7 @@
     <!-- Couple name + details -->
     {% if guest_name %} 
     <p class="invite-line reveal">
-      You are invited to the wedding reception of
+      You are invited to the wedding of
     </p>
     {% endif %}
     <h1 class="names reveal">Karanpreet &amp; Caleb</h1>
@@ -70,7 +68,6 @@
             alt="Karanpreet and Caleb"/>
       </div>
     </div>
-    <p class="photo-caption">A few of our favourite moments together</p>
   </section>
 
   <!-- ── Details ── -->
@@ -78,6 +75,7 @@
     <div class="detail-card reveal">
       <div class="detail-icon">◆</div>
       <h3>Anand Karaj </h3>
+      <a href="https://en.wikipedia.org/wiki/Anand_Karaj" target="_blank">What is an Anand Karaj?</a>
       <p>Friday, 9:30 AM - 4:00 PM</p>
       <p>Blue Mountain Gurudwara</p>
     </div>
@@ -160,6 +158,7 @@
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
+            <option value="8">8</option>
           </select>
         </div>
 
