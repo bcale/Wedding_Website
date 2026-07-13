@@ -165,38 +165,26 @@ body {
   z-index: 1;
   padding: 4rem 1.5rem 3rem;
   background: var(--cream);
+  text-align: center;
 }
 
 .photo-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  max-width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 960px;
   margin: 0 auto 1.5rem;
 }
 
-@media (min-width: 600px) {
-  .photo-grid {
-    grid-template-columns: 1.2fr 0.9fr;
-    grid-template-rows: auto auto;
-  }
-  .photo-1 { grid-row: span 2; }
-}
-
-@media (min-width: 900px) {
-  .photo-grid { grid-template-columns: 1.3fr 1fr 1.1fr; grid-template-rows: unset; }
-  .photo-1 { grid-row: unset; }
-}
-
 .photo {
-  border-radius: 4px;
+  width: 100%;
+  max-width: 280px;
+  border-radius: 6px;
   overflow: hidden;
   opacity: 0;
-  transform: translateY(32px) scale(0.97);
+  transform: translateY(24px);
   transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-  width: 100%;
-  max-width: 450px;
-  margin: 0 auto; 
 }
 .photo.visible {
   opacity: 1;
@@ -205,22 +193,11 @@ body {
 .photo:nth-child(2) { transition-delay: 0.12s; }
 .photo:nth-child(3) { transition-delay: 0.24s; }
 
-.photo-inner {
+.photo img {
   width: 100%;
   aspect-ratio: 3/4;
-  background: linear-gradient(135deg, var(--blue-pale) 0%, #c2daf0 40%, var(--blue-mist) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--blue-light);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
-}
-.photo-inner::after {
-  content: 'your photo here';
-  opacity: 0.5;
+  object-fit: cover;
+  display: block;
 }
 
 .photo-caption {
