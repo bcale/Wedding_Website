@@ -33,20 +33,29 @@ const btnYesRec     = document.getElementById("btnYesRec");
 const btnNoRec      = document.getElementById("btnNoRec");
 const guestField = document.getElementById("guestField");
 
+// This function gets called if either the ceremony or reception toggle is true
+function showGuestField() {
+
+    if (attending_cer || attending_rec) {
+        guestField.style.display = "";
+    } else {
+        guestField.style.display = "none";
+    }
+}
 
 // Ceremony toggle button
 btnYesCer.addEventListener("click", () => {
   attending_cer = true;
   btnYesCer.classList.add("active");
   btnNoCer.classList.remove("active");
-  guestField.style.display = "";
+  showGuestField();
 });
 
 btnNoCer.addEventListener("click", () => {
   attending_cer = false;
   btnNoCer.classList.add("active");
   btnYesCer.classList.remove("active");
-  guestField.style.display = "none";
+  showGuestField();
 });
 
 // Reception toggle button
@@ -54,14 +63,14 @@ btnYesRec.addEventListener("click", () => {
   attending_rec = true;
   btnYesRec.classList.add("active");
   btnNoRec.classList.remove("active");
-  guestField.style.display = "";
+  showGuestField();
 });
 
 btnNoRec.addEventListener("click", () => {
   attending_rec = false;
   btnNoRec.classList.add("active");
   btnYesRec.classList.remove("active");
-  guestField.style.display = "none";
+  showGuestField();
 });
 
 /* ── Modal ───────────────────────────────────────────────────────────────── */
@@ -129,7 +138,7 @@ form.addEventListener("submit", async (e) => {
     const res = await fetch("/rsvp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, name, email, attending_ceremony, attending_reception, guest_count, message }),
+      body: JSON.stringify({ token, name, email, attending_cer, attending_rec, guest_count, message }),
     });
  
     const data = await res.json();
@@ -138,7 +147,7 @@ form.addEventListener("submit", async (e) => {
       submitBtn.textContent = "Send My RSVP";
       submitBtn.disabled = false;
  
-      if (attending_cer || attending_rec ) {
+      if (attending_cer || attending_rec) {
         showModal(
           `We can't wait to celebrate with you, ${name}!`,
           "Your RSVP has been received. We'll see you on September 19!"
