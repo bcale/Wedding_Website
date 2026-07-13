@@ -55,22 +55,29 @@
     <a href="#rsvp" class="cta-btn reveal">Kindly Reply</a>
   </section>
 
-  <!-- ── Photo strip ── -->
-  <section class="photos reveal-section">
+  <section class="photos">
     <div class="photo-grid">
-      <div class="photo photo-1 photo-reveal">
+      <div class="photo">
         <img src="{{ url_for('static', filename='images/happy_couple.jpg') }}"
-          alt="Karanpreet and Caleb happy"
-          class="photo-inner" />
+            alt="Karanpreet and Caleb"/>
+      </div>
+      <div class="photo">
+        <img src="{{ url_for('static', filename='images/photo2.jpg') }}"
+            alt="Karanpreet and Caleb"/>
+      </div>
+      <div class="photo">
+        <img src="{{ url_for('static', filename='images/photo3.jpg') }}"
+            alt="Karanpreet and Caleb"/>
       </div>
     </div>
+    <p class="photo-caption">A few of our favourite moments together</p>
   </section>
 
   <!-- ── Details ── -->
   <section class="details reveal-section">
     <div class="detail-card reveal">
       <div class="detail-icon">◆</div>
-      <h3>Anand Karaj</h3>
+      <h3>Anand Karaj </h3>
       <p>Friday, 9:30 AM - 4:00 PM</p>
       <p>Blue Mountain Gurudwara</p>
     </div>
