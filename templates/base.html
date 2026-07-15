@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Karanpreet &amp; Caleb</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=4"/>
+</head>
+<body>
+
+  <img src="{{ url_for('static', filename='images/upper_right.png') }}"
+       alt="" class="img-top-right" aria-hidden="true"/>
+
+  <!-- Nav -->
+  <nav class="site-nav">
+    <span class="nav-brand">K &amp; C</span>
+
+    <button class="nav-hamburger" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="{{ url_for('index') }}"
+             class="{{ 'active' if active_page == 'home' }}">Invitation</a></li>
+      <li><a href="{{ url_for('itinerary') }}"
+             class="{{ 'active' if active_page == 'itinerary' }}">Itinerary</a></li>
+      <li><a href="{{ url_for('locations') }}"
+             class="{{ 'active' if active_page == 'locations' }}">Locations</a></li>
+      <li><a href="{{ url_for('registry') }}"
+             class="{{ 'active' if active_page == 'registry' }}">Registry</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page content injected here -->
+  {% block content %}{% endblock %}
+
+  <script src="{{ url_for('static', filename='main.js') }}?v=4"></script>
+</body>
+</html>

@@ -93,7 +93,7 @@ def require_auth(f):
 
 @app.route("/")
 def index():
-    return render_template("index.html", guest_name=None, token=None)
+    return render_template("index.html", guest_name=None, token=None, active_page="home")
 
 
 @app.route("/i/<token>")
@@ -104,7 +104,7 @@ def invite(token):
     )
     if not guest:
         abort(404)
-    return render_template("index.html", guest_name=guest["name"], token=token)
+    return render_template("index.html", guest_name=guest["name"], token=token, active_page="home")
 
 
 @app.route("/rsvp", methods=["POST"])
@@ -137,6 +137,22 @@ def rsvp():
 def admin_responses():
     rows = execute("SELECT * FROM rsvps ORDER BY submitted_at DESC", fetchall=True)
     return render_template("admin.html", rows=rows or [])
+
+
+# Itinerary route
+@app.route("/itinerary")
+def itinerary():
+    return render_template("itinerary.html", active_page="itinerary")
+
+# Locations route
+@app.route("/locations")
+def locations():
+    return render_template("locations.html", active_page="locations")
+
+# Registry route
+@app.route("/registry")
+def registry():
+    return render_template("registry.html", active_page="registry")
 
 
 @app.route("/admin/seed-guests")

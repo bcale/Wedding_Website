@@ -1,3 +1,13 @@
+/* ── Nav hamburger ── */
+const navToggle = document.getElementById("navToggle");
+const navLinks  = document.getElementById("navLinks");
+
+if (navToggle) {
+  navToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+}
+
 /* ── Scroll reveal ───────────────────────────────────────────────────────── */
 const observer = new IntersectionObserver(
   (entries) => {
