@@ -14,11 +14,14 @@
 
 </head>
 <body>
-
+ 
   <img src="{{ url_for('static', filename='images/upper_right.png') }}"
      alt="" class="img-top-right" aria-hidden="true"/>
   <img src="{{ url_for('static', filename='images/lower_left.png') }}"
      alt="" class="img-bottom-left" aria-hidden="true"/>
+
+{% extends "base.html" %}
+{% block content %}   
 
   <!-- ── Floating floral petals background ── -->
   <div class="petals" aria-hidden="true">
@@ -70,34 +73,6 @@
             alt="Karanpreet and Caleb"/>
       </div>
     </div>
-  </section>
-
-  <!-- ── Details ── -->
-  <section class="details reveal-section">
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Anand Karaj </h3>
-      <a href="https://en.wikipedia.org/wiki/Anand_Karaj" target="_blank">What is an Anand Karaj?</a>
-      <p>Friday, 9:30 AM - 4:00 PM</p>
-      <p>Blue Mountain Gurudwara</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Cocktail Hour</h3>
-      <p>Saturday, 4:00 PM</p>
-      <p>The Courtyard</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Dinner Reception</h3>
-      <p>Saturday, 5:00 PM</p>
-      <p>The Tent</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Music, Dancing, & Cake</h3>
-      <p>Saturday, 7:00 PM</p>
-      <p>The Dance Floor</p>
   </section>
 
   <!-- ── RSVP Form ── -->
@@ -193,6 +168,7 @@
       <button type="button" class="modal-close" id="modalClose">Close</button>
     </div>
   </div>
+{% endblock %}
 
   <script src="{{ url_for('static', filename='main.js') }}?v=2"></script>
 </body>
