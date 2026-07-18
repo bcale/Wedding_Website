@@ -163,7 +163,7 @@ body {
 .photos {
   position: relative;
   z-index: 1;
-  padding: 4rem 1.5rem 3rem;
+  padding: 3.5rem 1.5rem 2.5rem;
   background: var(--cream);
   text-align: center;
 }
@@ -173,14 +173,14 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.25rem;
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto 1.5rem;
 }
 
 .photo {
   width: 100%;
-  max-width: 280px;
-  border-radius: 6px;
+  max-width: 300px;
+  border-radius: 5px;
   overflow: hidden;
   opacity: 0;
   transform: translateY(24px);
