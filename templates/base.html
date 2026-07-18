@@ -24,15 +24,15 @@
     </button>
 
     <ul class="nav-links" id="navLinks">
-      <li><a href="{{ url_for('index') }}"
-             class="{{ 'active' if active_page == 'home' }}">Invitation</a></li>
-      <li><a href="{{ url_for('itinerary_guest', token=token) if token else url_for('itinerary') }}"
-             class="{{ 'active' if active_page == 'itinerary' }}">Itinerary</a></li>
-      <li><a href="{{ url_for('locations_guest', token=token) if token else url_for('locations') }}"
-             class="{{ 'active' if active_page == 'locations' }}">Locations</a></li>
-      <li><a href="{{ url_for('registry', token=token) if token else url_for('registry') }}"
-             class="{{ 'active' if active_page == 'registry' }}">Registry</a></li>
-    </ul>
+        <li><a href="/" id="navHome"
+                class="{{ 'active' if active_page == 'home' }}">Invitation</a></li>
+        <li><a href="/itinerary" id="navItinerary"
+                class="{{ 'active' if active_page == 'itinerary' }}">Itinerary</a></li>
+        <li><a href="/locations" id="navLocations"
+                class="{{ 'active' if active_page == 'locations' }}">Locations</a></li>
+        <li><a href="/registry" id="navRegistry"
+                class="{{ 'active' if active_page == 'registry' }}">Registry</a></li>    
+        </ul>
   </nav>
 
   <!-- Page content injected here -->
