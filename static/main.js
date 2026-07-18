@@ -337,4 +337,31 @@ if (songSearch) {
 
   loadSongRequests();
 }
+
+/* ── Token persistence ───────────────────────────────────────────────────── */
+// On first load from a token URL, save it
+const pathParts = window.location.pathname.split('/');
+if (pathParts[1] === 'i' && pathParts[2]) {
+  sessionStorage.setItem('guestToken', pathParts[2]);
+}
+
+// Also check itinerary/locations token URLs
+if (['itinerary', 'locations'].includes(pathParts[1]) && pathParts[2]) {
+  sessionStorage.setItem('guestToken', pathParts[2]);
+}
+
+// Read stored token on any page
+const storedToken = sessionStorage.getItem('guestToken');
+
+/* ── Update nav links with stored token ─────────────────────────────────── */
+if (storedToken) {
+  const navHome      = document.getElementById("navHome");
+  const navItinerary = document.getElementById("navItinerary");
+  const navLocations = document.getElementById("navLocations");
+
+  if (navHome)      navHome.href      = `/i/${storedToken}`;
+  if (navItinerary) navItinerary.href = `/itinerary/${storedToken}`;
+  if (navLocations) navLocations.href = `/locations/${storedToken}`;
+  if (navRegistry) navRegistry.href = '/registry/${storedToken}';
+}
  
