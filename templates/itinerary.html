@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="inner-page">
+  <h1 class="inner-title">Itinerary</h1>
+
+  <h2 class="inner-date"><b>September 18, 2026</b></h2>
+  <h3 class="inner-event"><i>Traditional Sikh Ceremony</i></h3>
+  
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">9:30AM</div>
+      <div class="timeline-body">
+        <h3>Family Reception</h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">10AM</div>
+      <div class="timeline-body">
+        <h3>Breakfast</h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">11AM</div>
+      <div class="timeline-body">
+        <h3>Anand Karaj</h3>
+        <h3><a href="https://en.wikipedia.org/wiki/Anand_Karaj">What is an Anand Karaj?</a></h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">1PM</div>
+      <div class="timeline-body">
+        <h3>Lunch</h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">4PM</div>
+      <div class="timeline-body">
+        <h3>Doli</h3>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="inner-date"><b>September 19, 2026</b></h2>
+  <h3 class="inner-event"><i>Wedding Reception</i></h3>
+  
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">4PM</div>
+      <div class="timeline-body">
+        <h3>Cocktail Hour</h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">5PM</div>
+      <div class="timeline-body">
+        <h3>Dinner</h3>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">6PM - 9PM</div>
+      <div class="timeline-body">
+        <h3>Dancing, Cake, Etc.</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if token %}
+<div class="song-section">
+  <h2 class="song-title">Request a Song</h2>
+  <p class="song-subtitle">Help us build the perfect playlist</p>
+
+  <p class="song-guest-greeting">
+    Requesting as <strong>{{ guest_name }}</strong>
+  </p>
+  <input type="hidden" id="songGuestName" value="{{ guest_name }}"/>
+  <input type="hidden" id="guestToken" value="{{ token }}"/>
+
+  <div class="song-form">
+    <div class="field">
+      <label for="songSearch">Search for a song</label>
+      <input type="text" id="songSearch"
+             placeholder="Song title or artist…" autocomplete="off"/>
+      <ul class="song-results" id="songResults" hidden></ul>
+    </div>
+
+    <div class="song-selected" id="songSelected" hidden>
+      <span id="songSelectedText"></span>
+      <button type="button" class="song-clear" id="songClear">✕</button>
+    </div>
+
+    <button type="button" class="submit-btn" id="songSubmit">Add to Playlist</button>
+    <p class="form-error" id="songError"></p>
+  </div>
+
+  <div class="song-table-wrap">
+    <table class="song-table">
+      <thead>
+        <tr>
+          <th>Song</th>
+          <th>Artist</th>
+          <th>Requested by</th>
+        </tr>
+      </thead>
+      <tbody id="songTableBody">
+        <tr>
+          <td colspan="3" class="song-empty">No requests yet — be the first!</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

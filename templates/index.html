@@ -14,11 +14,12 @@
 
 </head>
 <body>
-
+ 
   <img src="{{ url_for('static', filename='images/upper_right.png') }}"
      alt="" class="img-top-right" aria-hidden="true"/>
-  <img src="{{ url_for('static', filename='images/lower_left.png') }}"
-     alt="" class="img-bottom-left" aria-hidden="true"/>
+
+{% extends "base.html" %}
+{% block content %}   
 
   <!-- ── Floating floral petals background ── -->
   <div class="petals" aria-hidden="true">
@@ -48,56 +49,25 @@
     </p>
     {% endif %}
     <h1 class="names reveal">Karanpreet &amp; Caleb</h1>
-    <p class="date reveal" style="text-decoration: underline;">September 18, 2026</p>
-    <p class="location reveal"><i>Blue Mountain Gurudwara</i><br>362 Schubert Rd, Bethel, PA</p>
-    <p class="date reveal" style="text-decoration: underline;">September 19, 2026</p>
-    <p class="location reveal"><i>The South Mountain Inn</i><br>143 N Galen Hall Rd, Wernersville, PA</p>
+    <p class="date reveal">September 18 & 19, 2026</p>
     <a href="#rsvp" class="cta-btn reveal">Kindly Reply</a>
   </section>
 
   <section class="photos">
     <div class="photo-grid">
       <div class="photo">
-        <img src="{{ url_for('static', filename='images/happy_couple.jpg') }}"
+        <img src="{{ url_for('static', filename='images/sitting_couple_cropped_comp.jpg') }}"
             alt="Karanpreet and Caleb"/>
       </div>
       <div class="photo">
-        <img src="{{ url_for('static', filename='images/photo2.jpg') }}"
+        <img src="{{ url_for('static', filename='images/ring_compressed.jpg') }}"
             alt="Karanpreet and Caleb"/>
       </div>
       <div class="photo">
-        <img src="{{ url_for('static', filename='images/photo3.jpg') }}"
+        <img src="{{ url_for('static', filename='images/shanti_pria_comp.jpg') }}"
             alt="Karanpreet and Caleb"/>
       </div>
     </div>
-  </section>
-
-  <!-- ── Details ── -->
-  <section class="details reveal-section">
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Anand Karaj </h3>
-      <a href="https://en.wikipedia.org/wiki/Anand_Karaj" target="_blank">What is an Anand Karaj?</a>
-      <p>Friday, 9:30 AM - 4:00 PM</p>
-      <p>Blue Mountain Gurudwara</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Cocktail Hour</h3>
-      <p>Saturday, 4:00 PM</p>
-      <p>The Courtyard</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Dinner Reception</h3>
-      <p>Saturday, 5:00 PM</p>
-      <p>The Tent</p>
-    </div>
-    <div class="detail-card reveal">
-      <div class="detail-icon">◆</div>
-      <h3>Music, Dancing, & Cake</h3>
-      <p>Saturday, 7:00 PM</p>
-      <p>The Dance Floor</p>
   </section>
 
   <!-- ── RSVP Form ── -->
@@ -193,6 +163,7 @@
       <button type="button" class="modal-close" id="modalClose">Close</button>
     </div>
   </div>
+{% endblock %}
 
   <script src="{{ url_for('static', filename='main.js') }}?v=2"></script>
 </body>
