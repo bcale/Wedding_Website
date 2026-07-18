@@ -459,8 +459,8 @@ img.photo-inner {
   position: absolute;
   top: 0;
   right: 0;
-  width: 340px;
-  max-width: 45%;
+  width: 450px;
+  max-width: 55%;
   z-index: 50;
   pointer-events: none;
 }
