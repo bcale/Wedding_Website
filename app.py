@@ -194,6 +194,20 @@ def locations_guest(token):
 def registry():
     return render_template("registry.html", active_page="registry")
 
+# Resitry with token route
+@app.route("/registry/<token>")
+def registry_guest(token):
+    guest = execute(
+        "SELECT name FROM guests WHERE token = ?",
+        (token,), fetchone=True
+    )
+    if not guest:
+        abort(404)
+    return render_template("registry.html",
+                           active_page="registry",
+                           guest_name=guest["name"],
+                           token=token)
+
 
 @app.route("/admin/seed-guests")
 @require_auth

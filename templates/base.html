@@ -30,7 +30,7 @@
              class="{{ 'active' if active_page == 'itinerary' }}">Itinerary</a></li>
       <li><a href="{{ url_for('locations_guest', token=token) if token else url_for('locations') }}"
              class="{{ 'active' if active_page == 'locations' }}">Locations</a></li>
-      <li><a href="{{ url_for('registry') }}"
+      <li><a href="{{ url_for('registry', token=token) if token else url_for('registry') }}"
              class="{{ 'active' if active_page == 'registry' }}">Registry</a></li>
     </ul>
   </nav>
