@@ -157,7 +157,7 @@ def itinerary():
     return render_template("itinerary.html", active_page="itinerary", guest_name=None, token=None)
 
 # Itinerary route with a token
-@app.route("/itinerary<token>")
+@app.route("/itinerary/<token>")
 def itinerary_guest(token):
     guest = execute(
         "SELECT name FROM guests WHERE token = ?",
