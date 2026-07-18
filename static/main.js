@@ -194,4 +194,147 @@ form.addEventListener("submit", async (e) => {
     submitBtn.disabled = false;
   }
 });
+
+/* ── Song requests (itinerary page only) ─────────────────────────────────── */
+const songSearch    = document.getElementById("songSearch");
+const songResults   = document.getElementById("songResults");
+const songSelected  = document.getElementById("songSelected");
+const songSelectedText = document.getElementById("songSelectedText");
+const songClear     = document.getElementById("songClear");
+const songSubmit    = document.getElementById("songSubmit");
+const songError     = document.getElementById("songError");
+const songTableBody = document.getElementById("songTableBody");
+
+if (songSearch) {
+  let selectedSong = null;
+  let searchTimer  = null;
+
+  // Debounced search — waits 400ms after typing stops
+  songSearch.addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    const q = songSearch.value.trim();
+    if (q.length < 2) { songResults.hidden = true; return; }
+    searchTimer = setTimeout(() => fetchSongs(q), 400);
+  });
+
+  async function fetchSongs(q) {
+    try {
+      const res  = await fetch(`/api/search-songs?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      renderResults(data);
+    } catch {
+      songResults.hidden = true;
+    }
+  }
+
+  function renderResults(songs) {
+    songResults.innerHTML = "";
+    if (!songs.length) { songResults.hidden = true; return; }
+    songs.forEach(s => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span class="song-result-title">${s.title}</span>
+        <span class="song-result-artist">${s.artist}</span>
+      `;
+      li.addEventListener("click", () => selectSong(s));
+      songResults.appendChild(li);
+    });
+    songResults.hidden = false;
+  }
+
+  function selectSong(s) {
+    selectedSong = s;
+    songSelectedText.textContent = `${s.title} — ${s.artist}`;
+    songSelected.hidden  = false;
+    songResults.hidden   = true;
+    songSearch.value     = "";
+  }
+
+  songClear.addEventListener("click", () => {
+    selectedSong = null;
+    songSelected.hidden = true;
+    songSearch.value    = "";
+  });
+
+  // Hide results when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!songSearch.contains(e.target) && !songResults.contains(e.target)) {
+      songResults.hidden = true;
+    }
+  });
+
+  songSubmit.addEventListener("click", async () => {
+  if (songError) songError.textContent = "";
+  const token     = document.getElementById("guestToken").value;
+  const guestName = document.getElementById("songGuestName").value.trim();
+
+  if (!guestName && !token) {
+    songError.textContent = "Please enter your name.";
+    return;
+  }
+  if (!selectedSong) {
+    songError.textContent = "Please search and select a song.";
+    return;
+  }
+
+  songSubmit.textContent = "Adding…";
+  songSubmit.disabled = true;
+
+  try {
+    const res = await fetch("/api/request-song", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        token,
+        guest_name: guestName,
+        song_title: selectedSong.title,
+        artist:     selectedSong.artist
+      })
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      addRowToTable(data.guest_name, selectedSong.title, selectedSong.artist);
+      selectedSong = null;
+      songSelected.hidden = true;
+      if (!token) document.getElementById("songGuestName").value = "";
+      songSubmit.textContent = "Added ✓";
+      setTimeout(() => {
+        songSubmit.textContent = "Add to Playlist";
+        songSubmit.disabled = false;
+      }, 2000);
+    } else {
+      songError.textContent = data.error || "Something went wrong.";
+      songSubmit.textContent = "Add to Playlist";
+      songSubmit.disabled = false;
+    }
+  } catch {
+    songError.textContent = "Network error. Please try again.";
+    songSubmit.textContent = "Add to Playlist";
+    songSubmit.disabled = false;
+  }
+});
+
+  function addRowToTable(name, title, artist) {
+    const empty = songTableBody.querySelector(".song-empty");
+    if (empty) empty.parentElement.remove();
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${title}</td><td>${artist}</td><td>${name}</td>`;
+    songTableBody.prepend(tr);
+  }
+
+  // Load existing requests on page load
+  async function loadSongRequests() {
+    try {
+      const res  = await fetch("/api/song-requests");
+      const data = await res.json();
+      if (data.length) {
+        songTableBody.innerHTML = "";
+        data.forEach(r => addRowToTable(r.guest_name, r.song_title, r.artist));
+      }
+    } catch { /* silently skip */ }
+  }
+
+  loadSongRequests();
+}
  

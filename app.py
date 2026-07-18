@@ -1,9 +1,11 @@
 import os
 import secrets
+import requests as http_requests
 from datetime import datetime
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, abort, Response
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -70,6 +72,16 @@ def init_db():
             submitted_at TEXT NOT NULL
         )
     """)
+
+    execute(f"""
+    CREATE TABLE IF NOT EXISTS song_requests (
+        id           {serial} PRIMARY KEY,
+        guest_name   TEXT NOT NULL,
+        song_title   TEXT NOT NULL,
+        artist       TEXT NOT NULL,
+        requested_att TEXT NOT NULL
+    )
+""")
 
 
 init_db()
@@ -142,12 +154,40 @@ def admin_responses():
 # Itinerary route
 @app.route("/itinerary")
 def itinerary():
-    return render_template("itinerary.html", active_page="itinerary")
+    return render_template("itinerary.html", active_page="itinerary", guest_name=None, token=None)
+
+# Itinerary route with a token
+@app.route("/itinerary<token>")
+def itinerary_guest(token):
+    guest = execute(
+        "SELECT name FROM guests WHERE token = ?",
+        (token,), fetchone=True
+    )
+    if not guest:
+        abort(404)
+    return render_template("itinerary.html",
+                           active_page="itinerary",
+                           guest_name=guest["name"],
+                           token=token)
 
 # Locations route
 @app.route("/locations")
 def locations():
     return render_template("locations.html", active_page="locations")
+
+# Locations route with a token included
+@app.route("/locations/<token>")
+def locations_guest(token):
+    guest = execute(
+        "SELECT name FROM guests WHERE token = ?",
+        (token,), fetchone=True
+    )
+    if not guest:
+        abort(404)
+    return render_template("locations.html",
+                           active_page="locations",
+                           guest_name=guest["name"],
+                           token=token)
 
 # Registry route
 @app.route("/registry")
@@ -223,6 +263,79 @@ def seed_guests():
 
     return jsonify(results)
 
+
+# Adding routes for song search feature. API calls to musicbrainz.org are managed and parsed through these routes. 
+
+@app.route("/api/search-songs")
+def search_songs():
+    query = request.args.get("q", "").strip()
+    if not query or len(query) < 2:
+        return jsonify([])
+
+    try:
+        resp = http_requests.get(
+            "https://musicbrainz.org/ws/2/recording",
+            params={
+                "query": query,
+                "limit": 8,
+                "fmt": "json"
+            },
+            headers={"User-Agent": "KaranpreetAndCalebWedding/1.0 (karanpreetandcaleb@protonmail.com)"},
+            timeout=5
+        )
+        data = resp.json()
+        results = []
+        for r in data.get("recordings", []):
+            artist = r.get("artist-credit", [{}])[0].get("artist", {}).get("name", "Unknown")
+            results.append({
+                "title": r.get("title", ""),
+                "artist": artist
+            })
+        return jsonify(results)
+    except Exception as e:
+        print(f"MusicBrainz error: {e}")
+        return jsonify([])
+
+
+@app.route("/api/request-song", methods=["POST"])
+def request_song():
+    data       = request.get_json()
+    token      = (data.get("token") or "").strip()
+    song_title = (data.get("song_title") or "").strip()
+    artist     = (data.get("artist") or "").strip()
+
+    # If token provided, look up guest name from DB
+    if token:
+        guest = execute(
+            "SELECT name FROM guests WHERE token = ?",
+            (token,), fetchone=True
+        )
+        if not guest:
+            return jsonify({"ok": False, "error": "Invalid token."}), 403
+        guest_name = guest["name"]
+    else:
+        guest_name = (data.get("guest_name") or "").strip()
+        if not guest_name:
+            return jsonify({"ok": False, "error": "Please enter your name."}), 400
+
+    if not song_title or not artist:
+        return jsonify({"ok": False, "error": "Please select a song."}), 400
+
+    execute(
+        """INSERT INTO song_requests (guest_name, song_title, artist, requested_at)
+           VALUES (?, ?, ?, ?)""",
+        (guest_name, song_title, artist, datetime.utcnow().isoformat())
+    )
+    return jsonify({"ok": True, "guest_name": guest_name})
+
+
+@app.route("/api/song-requests")
+def get_song_requests():
+    rows = execute(
+        "SELECT guest_name, song_title, artist, requested_at FROM song_requests ORDER BY requested_at DESC",
+        fetchall=True
+    )
+    return jsonify([dict(r) for r in (rows or [])])
 
 # ── Local dev entry point ─────────────────────────────────────────────────────
 
