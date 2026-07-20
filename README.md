@@ -1,5 +1,7 @@
 # Wedding Invitation Site
 
+# README.md requires an update as new features were added and design changes implemented.   
+
 A custom wedding invitation website with animated background, personalized hero text,
 photo gallery, and an RSVP form backed by postgreSQL.
 
