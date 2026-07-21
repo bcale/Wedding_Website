@@ -1,6 +1,6 @@
 # Wedding Invitation Site  
 
-This is a wedding invitation website that user tokens to create personalized URLs for each guest. This project has a Flask and PostgreSQL backend, leveraging Render web services and Supabase for deployment. 
+This is a wedding invitation website that uses tokens to create personalized URLs for each guest. This project has a Flask and PostgreSQL backend, leveraging Render web services for deployment and Supabase for data storage. 
 
 ## Project structure
 
@@ -11,7 +11,7 @@ wedding/
 ├── rsvp.db                 # Auto-created on first run. Not utilized afterwards.
 ├── templates/
 │   ├── index.html          # Main invitation page.
-│   └── admin.html          # RSVP response viewer.
+│   └── admin.html          # RSVP response viewer. HTTP authentication to view. 
 |   |__ base.html           # Includes navigation bar. Extends to other HTML files.
 |   |__ itinerary.html      # Song search feature held here.
 |   |__ locations.html      # Locations can launch in Google Maps.
