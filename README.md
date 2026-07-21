@@ -2,6 +2,8 @@
 
 This is a wedding invitation website that uses tokens to create personalized URLs for each guest. This project has a Flask and PostgreSQL backend, leveraging Render web services for deployment and Supabase for data storage. 
 
+Practiced using APIs by pulling information from MusicBrainz.org to create a shared playlist for the event. 
+
 ## Project structure
 
 ```
