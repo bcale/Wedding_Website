@@ -1,53 +1,22 @@
-# Wedding Invitation Site
+# Wedding Invitation Site  
 
-# README.md requires an update as new features were added and design changes implemented.   
-
-A custom wedding invitation website with animated background, personalized hero text,
-photo gallery, and an RSVP form backed by postgreSQL.
+This is a wedding invitation website that user tokens to create personalized URLs for each guest. This project has a Flask and PostgreSQL backend, leveraging Render web services and Supabase for deployment. 
 
 ## Project structure
 
 ```
 wedding/
-├── app.py                  # Flask app + routes + DB setup
+├── app.py                  # Flask app; routes; DB setup; API calls.
 ├── requirements.txt
-├── rsvp.db                 # Auto-created on first run
+├── rsvp.db                 # Auto-created on first run. Not utilized afterwards.
 ├── templates/
-│   ├── index.html          # Main invitation page
-│   └── admin.html          # RSVP response viewer
+│   ├── index.html          # Main invitation page.
+│   └── admin.html          # RSVP response viewer.
+|   |__ base.html           # Includes navigation bar. Extends to other HTML files.
+|   |__ itinerary.html      # Song search feature held here.
+|   |__ locations.html      # Locations can launch in Google Maps.
+|   |__ registry.html       # QR codes held here.
 └── static/
-    ├── style.css           # Mobile-first styles + animations
-    └── main.js             # Scroll reveal + RSVP form logic
+    ├── style.css           # Mobile-first styles and animations.
+    └── main.js             # Token persistence, song dropdown data handling, et al. 
 ```
-
-## Local setup
-
-```bash
-# 1. Create & activate a virtual environment
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Run the dev server
-python app.py
-```
-
-
-## View RSVP responses
-
-Visit http://localhost:5000/admin/responses — no login required locally.
-Add HTTP basic auth before deploying to production!
-
-## Deploying to Render
-
-I am using Render to host this project. Here are the steps I took to broadcast from gitHub: 
-
-1. Push this folder to a GitHub repo
-2. Create a new "Web Service" on render.com, connect your repo
-3. Set build command:  `pip install -r requirements.txt`
-4. Set start command:  `gunicorn app:app`
-5. Add `gunicorn` to requirements.txt
-6. For the database: create a free PostgreSQL instance on Render
-   and swap SQLite for psycopg2 (see comments in app.py)
