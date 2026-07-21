@@ -12,8 +12,8 @@ load_dotenv()
 app = Flask(__name__)
 
 DATABASE_URL    = os.environ.get("DATABASE_URL")
-ADMIN_USER   = os.environ.get("ADMIN_USER", "caleb007")
-ADMIN_PASS   = os.environ.get("ADMIN_PASS", "H@mb0rg3r!12")
+ADMIN_USER   = os.environ.get("ADMIN_USER")
+ADMIN_PASS   = os.environ.get("ADMIN_PASS")
 
 # ── DB helpers ────────────────────────────────────────────────────────────────
 
@@ -209,73 +209,7 @@ def registry_guest(token):
                            token=token)
 
 
-@app.route("/admin/seed-guests")
-@require_auth
-def seed_guests():
-    guests = [
-        "Mom",
-        "Dad",
-        "Noah",
-        "Sam",
-        "Naomi & Lucas & Philip",
-        "Josiah & Emma",
-        "Lilyanna",
-        "Maryrose",
-        "Uncle Russell & Aunt Priscilla",
-        "Jefferson",
-        "Nathan & Family",
-        "Laura & Family",
-        "Uncle Steven & Aunt Lancy",
-        "Uncle David & Family",
-        "Uncle Mark & Family",
-        "Uncle George & Family",
-        "Aunty Becky",
-        "Gavin & Jovie",
-        "Spencer",
-        "Madeline",
-        "Hunter",
-        "Alberino Family",
-        "Violento Family",
-        "Aunt Julia & Family",
-        "Rich",
-        "Brandon",
-        "Angelo",
-        "Eric & Family",
-        "Harry",
-        "Tyler",
-        "Larry",
-        "Bryce & Family",
-        "Evan & Family",
-        "Mimi",
-        "Papa",
-        "Mr. Singh & Ms. Kaur",
-        "Isha",
-        "Karanpreet <3",
-        "David",
-        "Tariq",
-        "Watson",
-        "Tim",
-        "Jake"
-        ""
-    ]
 
-    results = []
-    for name in guests:
-        existing = execute(
-            "SELECT token FROM guests WHERE name = ?",
-            (name,), fetchone=True
-        )
-        if existing:
-            token = existing["token"]
-        else:
-            token = secrets.token_urlsafe(8)
-            execute(
-                "INSERT INTO guests (name, token) VALUES (?, ?)",
-                (name, token)
-            )
-        results.append({"name": name, "token": token})
-
-    return jsonify(results)
 
 
 # Adding routes for song search feature. API calls to musicbrainz.org are managed and parsed through these routes. 
