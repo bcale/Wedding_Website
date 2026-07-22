@@ -107,7 +107,7 @@ body {
 /* Names */
 .names {
   font-family: var(--font-serif);
-  font-size: clamp(2.4rem, 8vw, 4.5rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   font-weight: 300;
   letter-spacing: 0.05em;
   color: var(--blue-deep);
